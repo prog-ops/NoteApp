@@ -7,8 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const TodoEditScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const {todoId, todos, addTodo, editTodo, existingTodo, toggleTodoStatus} =
-    route.params || {};
+  const {todoId, addTodo, editTodo, existingTodo} = route.params || {};
   const isEditing = typeof todoId === 'number';
 
   const [title, setTitle] = useState('');
@@ -19,19 +18,7 @@ const TodoEditScreen = () => {
       setTitle(existingTodo.title);
       setDescription(existingTodo.description);
     }
-  }, [isEditing, todoId]);
-
-  const deleteTodo = todoId => {
-    const updatedTodos = todos.filter(todo => todo.id !== todoId);
-    setTodos(updatedTodos);
-    saveTodos(updatedTodos);
-  };
-
-  const handleToggleStatus = () => {
-    if (existingTodo) {
-      toggleTodoStatus(existingTodo.id);
-    }
-  };
+  }, [existingTodo, isEditing, todoId]);
 
   const saveTodos = async updatedTodos => {
     try {
